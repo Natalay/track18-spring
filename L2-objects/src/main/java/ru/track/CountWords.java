@@ -1,6 +1,11 @@
 package ru.track;
 
+
+//import javafx.beans.binding.NumberExpression;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 
 
 /**
@@ -32,6 +37,7 @@ public class CountWords {
         this.skipWord = skipWord;
     }
 
+
     /**
      * Метод на вход принимает объект File, изначально сумма = 0
      * Нужно пройти по всем строкам файла, и если в строке стоит целое число,
@@ -40,10 +46,25 @@ public class CountWords {
      * @return - целое число - сумма всех чисел из файла
      */
     public long countNumbers(File file) throws Exception {
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String line = null;
+        long result = 0;
+        while (true) {
+            line = bufferedReader.readLine();
+            if (line == null) {
+                break;
+            }
+            try {
+                result += Integer.parseInt(line);
+            } catch(NumberFormatException e){
+                    //
+                }
+            line = null;
+            }
+        fileReader.close();
         return 0;
     }
-
-
     /**
      * Метод на вход принимает объект File, изначально результат= ""
      * Нужно пройти по всем строкам файла, и если в строка не пустая и не число
@@ -52,7 +73,43 @@ public class CountWords {
      * @return - результирующая строка
      */
     public String concatWords(File file) throws Exception {
-        return null;
+        String result = "";
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        StringBuilder resString = new StringBuilder();
+        String line = null;
+        int i = 0;
+        char c;
+        boolean prov;
+        while (true) {
+            line = bufferedReader.readLine();
+            if (line == null){
+                break;
+            }
+            try {
+                //
+                for (i = 0; i < line.length(); i++) {
+                    c = line.charAt(i);
+                    if ((!Character.isDigit(c)) && (c !=' ') && (c != '\n')){
+                        resString.append(c);
+                    }
+                    if (c == '\n'){
+                        resString.append(' ');
+                    }
+
+                }
+            } catch(NumberFormatException e){
+                //
+            }
+            line = null;
+        }
+        fileReader.close();
+        return result;
+    }
+    public static void main(String[] args) {
+        File words = new File ("C:\\Users\\useer\\Desktop\\track18-spring\\L2-objects\\words.txt");
+        CountWords count  = new CountWords("");
+        System.out.println(count.concatWords(words));
     }
 
 }
